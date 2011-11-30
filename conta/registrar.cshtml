@@ -1,0 +1,96 @@
+﻿@{
+    Layout = "~/comp/layout_geral.cshtml";
+    Page.Title = "Novo registro";
+    
+    var usuario = "";
+    var nome = "";
+    var senha = "";
+    var confsenha = "";
+    
+    var taValido = true;
+        
+    if( IsPost )
+    {
+        usuario = Request["usuario"];
+        nome = Request["nome"];
+        senha = Request["senha"];
+        confsenha = Request["confsenha"];
+        
+        if( usuario.IsEmpty() )
+        {
+            taValido = false;
+        }
+        
+        if( nome.IsEmpty() )
+        {
+            taValido = false;
+        }
+        
+        if( senha.IsEmpty() )
+        {
+            taValido = false;
+        }
+        
+        if( confsenha.IsEmpty() )
+        {
+            taValido = false;
+        }
+        
+        if( !confsenha.Equals(senha) && taValido )
+        {
+            taValido = false;
+        }
+        
+        if( taValido )
+        {
+            var db = Database.Open("generalMarket");
+            
+            var result = db.QuerySingle( "SELECT login FROM cliente WHERE login = @0", usuario );
+            if( result == null )
+            {
+                //db.Execute("INSERT INTO cliente(nome,login,senha,email) VALUES(@0,@1,@2,@3)", nome, usuario, senha, "padron@dron.con");
+                db.Execute("INSERT INTO cliente(nome,login,email) VALUES(@0,@1,@2)", nome, usuario, "padron@dron.con");
+                
+                try{
+                    WebSecurity.CreateAccount( usuario, senha );
+                    
+                    WebSecurity.Login( usuario, senha );
+                    Response.Redirect("~/");
+                }catch( System.Web.Security.MembershipCreateUserException e)
+                {
+                    <p>Exceção ocorreu: @e.ToString()</p>
+                }
+            }else
+            {
+                <p>Usuário: @usuario já existe.</p>
+            }
+        }
+    }
+}
+
+@if(WebSecurity.IsAuthenticated)
+{
+    <p>Saia primeiro para fazer novo registro.</p>
+}else
+{
+    <form method="post">
+        <fieldset>
+            <legend>Registro de nova conta</legend>
+            <ol>
+            <li>
+                <label>Usuário:</label>
+                <input type="text" name="usuario" maxlength="20" title="O seu nome de usuário desejado."/></li>
+            <li>
+                <label>Nome:</label>
+                <input type="text" name="nome" maxlength="40" title="O seu nome completo."/></li>
+            <li>
+                <label>Senha:</label>
+                <input type="password" name="senha" maxlength="20" title="Cria uma senha."/></li>
+            <li>
+                <label>Confirme a senha:</label>
+                <input type="password" name="confsenha" maxlength="20" title="Confirme a senha, redigitando-a."/></li>            
+            </ol>
+            <input type="submit" value="Registrar"/>
+        </fieldset>
+    </form>
+}

@@ -1,0 +1,10 @@
+﻿@{
+    Layout = "~/comp/layout_geral.cshtml";
+    Page.Title = "Início";
+}
+
+@if(WebSecurity.IsAuthenticated)
+{
+    <p>Bem vindo!</p>
+}
+<p>Página Inicial ;)</p>

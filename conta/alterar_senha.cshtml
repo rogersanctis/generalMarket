@@ -1,0 +1,26 @@
+﻿@{
+    WebSecurity.RequireAuthenticatedUser();
+    
+    Layout = "~/comp/layout_geral.cshtml";
+    Page.Title = "Alterar senha";
+}
+
+<form method="post" action="">
+    <fieldset>
+        <legend>Alterar senha</legend>
+        <ol>            
+            <li>
+                <label>Senha antiga:</label>
+                <input type="password" name="velha_senha" />
+            </li>
+            <li>
+                <label>Nova senha:</label>
+                <input type="password" name="nova_senha" />
+            </li>
+            <li>
+                <label>Confirme a nova senha:</label>
+                <input type="password" name="conf_senha" />
+            </li>
+        </ol>
+    </fieldset>
+</form>

@@ -1,0 +1,13 @@
+﻿@{
+    WebSecurity.Logout();
+    
+    var retUrl = Request.QueryString["ReturnUrl"];
+    
+    if( retUrl.IsEmpty() )
+    {
+        Response.Redirect( "~/" );
+    }else
+    {
+        Context.RedirectLocal( retUrl );
+    }
+}

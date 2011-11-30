@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt" xml:lang="pt">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<title>Bônus Super Mercado - @Page.Title</title>
+<link rel="stylesheet" type="text/css" href="@Href("~/estilo_normal.css")" />
+<!--[if IE 6]>
+<link rel="stylesheet" type="text/css" href="@Href("~/estilo_iecss.css")" />
+<![endif]-->
+<script type="text/javascript" src="@Href("~/js/boxOver.js")"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="@Href("~/js/traduzir.js")"></script>
+</head>
+    <body>
+        <div id="main_container">
+            
+            <div id="traducao"></div>            
+            <!-- Inicio da área não traduzida -->
+            <div id="nao_traduzido">
+	    
+            @RenderPage("~/comp/cabecalho.cshtml")
+        
+            <div id="main_content">
+                
+                 @RenderPage("~/comp/menu_topo.cshtml")
+
+                <div class="crumb_navigation">
+                    Navegação: <span class="current">@Page.Title</span>
+                </div>
+
+                @RenderPage("~/comp/esquerda.cshtml")
+                
+                <div class="center_content">
+                @RenderBody()
+                </div>
+                
+                @RenderPage("~/comp/direita.cshtml")
+                
+            </div>
+            
+            @RenderPage("~/comp/rodape.cshtml")
+            
+                
+            </div>
+            <!-- FIM da área não traduzida -->
+        </div>   
+    </body>
+</html>

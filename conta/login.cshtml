@@ -1,0 +1,60 @@
+﻿@{
+    Layout = "~/comp/layout_geral.cshtml";
+    Page.Title = "Entrar";
+    
+    var usuario = "";
+    var senha = "";
+    
+    var taValido = true;
+    
+    if( IsPost )
+    {
+        usuario = Request["usuario"];
+        senha = Request["senha"];
+        
+        if(usuario.IsEmpty())
+        {
+            taValido = false;
+        }
+        if(senha.IsEmpty())
+        {
+            taValido = false;
+        }
+        
+        if(taValido)
+        {
+            if( WebSecurity.Login( usuario, senha, false ) )
+            {
+                var urlRetorno = Request.QueryString["ReturnUrl"];
+                if( urlRetorno.IsEmpty() )
+                {
+                    Response.Redirect("~/");
+                }else
+                {
+                    Context.RedirectLocal( urlRetorno );
+                }
+            }
+            taValido = false;
+        }
+    }
+}
+
+@if(!taValido)
+{
+    <p>Houve um problema na conexão ou você proveu informações inválidas.</p>
+}
+
+<form method="post" onsubmit="@Href("~/")">
+    <fieldset>        
+        <legend>Entrar</legend>
+        <ol>
+        <li><label>Usuário:</label>
+        <input type="text" name="usuario" maxlength="20" title="O seu nome de usuário"/>
+        </li>
+        <li><label>Senha:</label>
+        <input type="password" name="senha" maxlength="20" title="Senha"/>
+        </li>
+        </ol>
+        <p><input type="submit" value="entrar" title="Clique para entrar" /><span><a href="registrar.cshtml">Ainda não sou registrado.</a></span></p>
+    </fieldset>    
+</form>

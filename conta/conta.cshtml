@@ -1,0 +1,33 @@
+﻿@{
+    Layout = "~/comp/layout_geral.cshtml";
+    Page.Title = "Sua Conta";
+    
+    if( !WebSecurity.IsAuthenticated )
+    {
+        <p>Nenhum Usuário logado. Por favor <a href="@Href("~/conta/login.cshtml")">entre</a> primeiro.</p>
+    }else
+    {
+        var idUsuario = WebSecurity.CurrentUserId;
+        var db = Database.Open("generalMarket");
+    
+        var result = db.QuerySingle("SELECT nome,login,email FROM cliente WHERE id=@0", idUsuario);
+        
+        if( result != null )
+        {
+            <table>
+                <tr>
+                    <td>Nome:</td><td>@result.nome</td>
+                </tr>
+                <tr>
+                    <td>Login:</td><td>@result.login</td>
+                </tr>
+                <tr>
+                    <td>e-mail:</td><td>@result.email</td>
+                </tr>
+            </table>
+            <div><a href="alterar_senha.cshtml">Alterar senha</a></div>
+            db.Close();
+        }
+    }    
+    
+}
