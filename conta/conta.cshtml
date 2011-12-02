@@ -10,22 +10,28 @@
         var idUsuario = WebSecurity.CurrentUserId;
         var db = Database.Open("generalMarket");
     
-        var result = db.QuerySingle("SELECT nome,login,email FROM cliente WHERE id=@0", idUsuario);
+        var result = db.QuerySingle("SELECT nome,login,email,acesso FROM usuario WHERE id=@0", idUsuario);
         
         if( result != null )
         {
-            <table>
-                <tr>
-                    <td>Nome:</td><td>@result.nome</td>
-                </tr>
-                <tr>
-                    <td>Login:</td><td>@result.login</td>
-                </tr>
-                <tr>
-                    <td>e-mail:</td><td>@result.email</td>
-                </tr>
-            </table>
-            <div><a href="alterar_senha.cshtml">Alterar senha</a></div>
+            if( result.acesso == 0 )
+            {
+                Response.Redirect("~/admin/conta.cshtml");
+            }else
+            {
+                <table>
+                    <tr>
+                        <td>Nome:</td><td>@result.nome</td>
+                    </tr>
+                    <tr>
+                        <td>Login:</td><td>@result.login</td>
+                    </tr>
+                    <tr>
+                        <td>e-mail:</td><td>@result.email</td>
+                    </tr>
+                </table>
+                <div><a href="alterar_senha.cshtml">Alterar senha</a></div>
+            }
             db.Close();
         }
     }    

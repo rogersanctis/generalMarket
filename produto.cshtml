@@ -1,0 +1,72 @@
+﻿@{  
+    Layout = "~/comp/layout_geral.cshtml";
+    Page.Title = "Produtos";
+
+    var produtoId = Request.QueryString["p"];
+    
+    if( string.IsNullOrEmpty(produtoId) )
+    {
+        <p>Nenhum produo foi selecionado. Vá em <a href="@Href("~/produtos.cshtml")">produtos</a> e clique em um produto.</p>
+        Response.AppendHeader("REFRESH", "5;URL=" + Href("~/") );
+    }
+    else
+    {
+        
+        var db = Database.Open("generalMarket");
+        
+        var produto = db.QuerySingle( "SELECT nome,descricao,valor,valor_anterior,img FROM produto WHERE id=@0", produtoId );
+        if(produto != null )
+        {
+            <div class="center_title_bar">
+                @produto.nome
+            </div>
+        
+            <div class="prod_box_big">
+                <div class="top_prod_box_big">
+                    
+                </div>
+        
+                <div class="center_prod_box_big">
+        
+                    <div class="product_img_big">
+                        <img src="@Href("~/imgs/produtos/" + produto.img)" alt="" title="" border="0" />
+                    </div>
+        
+                    <div class="detalhes_big_box">
+                        <div class="product_title_big">@produto.descricao
+                            
+                        </div>
+        
+                        <div class="specifications">
+                            <p>Os dados abaixo, ainda vão ser implementados.</p>
+                            Disponibilitate: <span class="blue">Em estoque ou Indisponível</span><br />
+                            Tipo de transporte: <span class="blue">Por conta do usuário ou da empresa.</span><br />
+                        </div>
+        
+                        <div class="prod_price_big">
+                            @if( produto.valor_anterior != null )
+                            {
+                                if( typeof(decimal) == produto.valor_anterior.GetType()  )
+                                {
+                                    <span class="reduce">@funcs.paraMoedaReal(produto.valor_anterior)</span> 
+                                }
+                            }
+                            <span class="price">@funcs.paraMoedaReal(produto.valor)</span>     
+                        </div>
+        
+                        <a href="#" class="addtocart">Comprar</a>
+                        <a href="#" class="compare">comparar</a>
+        
+                    </div>
+                </div>
+        
+                <div class="bottom_prod_box_big">
+                    
+                </div>
+            </div>
+        }else
+        {
+            <p>Erro.</p>
+        }
+    }
+}

@@ -4,12 +4,24 @@
     <ul class="left_menu">
         @{
             var db = Database.Open("generalMarket");
-            var secoes = db.Query("SELECT nome,link FROM secao");
+            var secoes = db.Query("SELECT id,nome,img FROM secao");
             
             var liclass = "odd";
         }
-        @foreach(var secao in secoes ){
-            <li class="@liclass"><a href="@Href("~/secao/" + secao.link)">@secao.nome</a></li>
+        @foreach(var secao in secoes ){            
+            <li class="@liclass">
+                <a href="@Href("~/produtos.cshtml?s=" + secao.id)">
+                @{ /*if( !string.IsNullOrEmpty(secao.img) )
+                {
+                    <img src="@Href("~/imgs/secao/" + secao.img)" />                    
+                }
+                else*/
+                {
+                    <img src="@Href("~/comp/imgs/checked.png")" />
+                } }
+                <span>@secao.nome</span>
+                </a>
+            </li>
             
             if( liclass.Equals("odd") )
             {

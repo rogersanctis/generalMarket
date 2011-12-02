@@ -45,11 +45,11 @@
         {
             var db = Database.Open("generalMarket");
             
-            var result = db.QuerySingle( "SELECT login FROM cliente WHERE login = @0", usuario );
+            var result = db.QuerySingle( "SELECT login FROM usuario WHERE login = @0", usuario );
             if( result == null )
             {
                 //db.Execute("INSERT INTO cliente(nome,login,senha,email) VALUES(@0,@1,@2,@3)", nome, usuario, senha, "padron@dron.con");
-                db.Execute("INSERT INTO cliente(nome,login,email) VALUES(@0,@1,@2)", nome, usuario, "padron@dron.con");
+                db.Execute("INSERT INTO usuario(nome,login,email) VALUES(@0,@1,@2)", nome, usuario, "padron@dron.con");
                 
                 try{
                     WebSecurity.CreateAccount( usuario, senha );

@@ -1,0 +1,99 @@
+﻿@using WebMatrix.Data;
+@using System.Text;
+
+@{  
+    Layout = "~/comp/layout_geral.cshtml";
+    Page.Title = "Produtos";
+    
+    var secaoId = Request.QueryString["s"];
+    
+    var db = Database.Open( "generalMarket" );
+
+    if( !string.IsNullOrEmpty(secaoId) )
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append("SELECT nome FROM secao WHERE id=");
+        sb.Append(secaoId);
+        var secaoNome = db.QuerySingle( sb.ToString() );
+        
+        if( secaoNome != null )
+        {
+            Page.Title = "Produtos de " + secaoNome.nome;
+        }
+            
+        sb.Clear();
+        sb.Append("SELECT id,nome,valor,valor_anterior,img FROM produto WHERE secao_id=");
+        sb.Append( secaoId );
+        var produtos = db.Query( sb.ToString() );
+        
+        if( produtos != null && secaoNome != null )
+        {
+            <div class="center_title_bar">@secaoNome.nome</div>
+            foreach( var produto in produtos )
+            {
+                <div class="prod_box">
+                    <div class="top_prod_box"></div>
+                    <div class="center_prod_box">            
+                        <div class="product_title"><a href="@Href("~/produto.cshtml?p=" + produto.id)">@produto.nome</a></div>
+                        <div class="product_img"><a href="@Href("~/produto.cshtml?p=" + produto.id)"><img src="@Href("~/imgs/produtos/mini/" + @produto.img)" alt="" title="" border="0" /></a></div>
+                        <div class="prod_price">
+                            @if( produto.valor_anterior != null )
+                            {
+                                if( typeof(decimal) == produto.valor_anterior.GetType()  )
+                                {
+                                    <span class="reduce">@funcs.paraMoedaReal(produto.valor_anterior)</span> 
+                                }
+                            }
+                            <span class="price">@funcs.paraMoedaReal(produto.valor)</span>
+                        </div>                        
+                    </div>
+                    <div class="bottom_prod_box"></div>             
+                    <div class="prod_detalhes_tab">
+                    <a href="#" title="header=[Comprar] body=[&nbsp;] fade=[on]"><img src="@Href("~/comp/imgs/cart.gif")" alt="" title="" border="0" class="left_bt" /></a>
+                    <a href="@Href("~/especial.cshtml?p=" + produto.id)" title="header=[Especiais] body=[&nbsp;] fade=[on]"><img src="@Href("~/comp/imgs/favs.gif")" alt="" title="" border="0" class="left_bt" /></a>
+                    <a href="#" title="header=[Gifts] body=[&nbsp;] fade=[on]"><img src="@Href("~/comp/imgs/favorites.gif")" alt="" title="" border="0" class="left_bt" /></a>           
+                    <a href="@Href("~/produto.cshtml?p=" + produto.id)" class="prod_detalhes">detalhes</a>            
+                    </div>                     
+                </div>
+            }
+        }
+    }
+    else
+    {
+        var produtos = db.Query("SELECT id,nome,valor,valor_anterior,img FROM produto");
+        
+        if( produtos != null )
+        {
+            <div class="center_title_bar">Todos os Produtos</div>
+            foreach( var produto in produtos )
+            {
+                <div class="prod_box">
+                    <div class="top_prod_box"></div>
+                    <div class="center_prod_box">            
+                        <div class="product_title"><a href="@Href("~/produto.cshtml?p=" + produto.id)">@produto.nome</a></div>
+                        <div class="product_img"><a href="@Href("~/produto.cshtml?p=" + produto.id)"><img src="@Href("~/imgs/produtos/mini/" + @produto.img)" alt="" title="" border="0" /></a></div>
+                        <div class="prod_price">
+                            @if( produto.valor_anterior != null )
+                            {
+                                if( typeof(decimal) == produto.valor_anterior.GetType()  )
+                                {
+                                    <span class="reduce">@funcs.paraMoedaReal(produto.valor_anterior)</span> 
+                                }
+                            }
+                            <span class="price">@funcs.paraMoedaReal(produto.valor)</span>
+                        </div>
+                    </div>
+                    <div class="bottom_prod_box"></div>             
+                    <div class="prod_detalhes_tab">
+                    <a href="#" title="header=[Comprar] body=[&nbsp;] fade=[on]"><img src="@Href("~/comp/imgs/cart.gif")" alt="" title="" border="0" class="left_bt" /></a>
+                    <a href="@Href("~/especial.cshtml?p=" + produto.id)" title="header=[Especiais] body=[&nbsp;] fade=[on]"><img src="@Href("~/comp/imgs/favs.gif")" alt="" title="" border="0" class="left_bt" /></a>
+                    <a href="#" title="header=[Gifts] body=[&nbsp;] fade=[on]"><img src="@Href("~/comp/imgs/favorites.gif")" alt="" title="" border="0" class="left_bt" /></a>           
+                    <a href="@Href("~/produto.cshtml?p=" + produto.id)" class="prod_detalhes">detalhes</a>            
+                    </div>                     
+                </div>
+            }
+        }
+    }
+    
+    db.Close();
+}

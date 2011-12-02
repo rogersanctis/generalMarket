@@ -1,0 +1,80 @@
+﻿@{
+    Layout = "~/comp/layout_geral.cshtml";
+    Page.Title = "Administração do Site";
+    
+    var adminErro = "";
+    var senhaErro = "";
+    var erroGeral = "";
+    var taValido = true;
+    
+    if( IsPost )
+    {
+        var admin = Request["administrador"];
+        var senha = Request["senha"];
+        
+        if( admin.IsEmpty() )
+        {
+            adminErro = "Preencha com o nome do administrador.";
+            taValido = false;
+        }
+        if( senha.IsEmpty() )
+        {
+            senhaErro = "O campo senha não pode ser vazio.";
+            taValido = false;
+        }
+        
+        if( taValido )
+        {
+            var db = Database.Open("generalMarket");
+            var admResult = db.QuerySingle("SELECT login,senha,acesso FROM usuario WHERE login=@0 AND senha=@1", admin, senha);
+            
+            if( admResult == null )
+            {
+                taValido = false;
+                erroGeral = "Usuário ou senha inválidos.";
+                //Response.Redirect("~/admin");
+            }else
+            {
+                // Faz o logout de qualquer usuário logado
+                if(WebSecurity.IsAuthenticated)
+                {
+                    WebSecurity.Logout();
+                }
+                
+                if( WebSecurity.Login( admin, senha, false ) )
+                {
+                    // Nível de acesso para administrador
+                    if( admResult.acesso == 0 )     
+                    {
+                        Response.Redirect("~/admin/conta.cshtml");
+                    }
+                }else
+                {
+                    erroGeral = "Impossível efetuar login do administrador.";
+                }
+            }
+        }
+    }
+}
+
+@if( !erroGeral.IsEmpty() )
+{
+    <p>Erro Geral: @erroGeral.</p>
+}
+
+<form method="post" action="">
+    <fieldset>
+        <legend>Entrar</legend>
+        <ol>
+            <li>
+                <label>Administrador:</label>
+                <input type="text" name="administrador" />@if(!taValido){ <span>@adminErro</span> }
+            </li>
+            <li>
+                <label>Senha:</label>
+                <input type="password" name="senha" />@if(!taValido){ <span>@senhaErro</span> }
+            </li>
+        </ol>
+        <input type="submit" value="entrar" />
+    </fieldset>
+</form>

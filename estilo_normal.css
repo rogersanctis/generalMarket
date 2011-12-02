@@ -1,6 +1,6 @@
 body
 {
-    background:url(comp/imgs/bg.jpg) no-repeat #fff center top;
+    background:#eff0f3 center top;
     padding:0;
     font-family:Arial, Helvetica, sans-serif;
     font-size:11px;
@@ -18,12 +18,14 @@ p{
     height:auto;
     margin:auto;
     padding:0px;
+    
 }
 
 .top_bar{
     width:1000px;
     height:38px;
-    background-color:#4a4a4a;
+    /*background-color:#4a4a4a;*/
+    background-color:#35363B;
 }
 
 .top_search{
@@ -71,7 +73,8 @@ input.search_input{
 .lang_text{
     float:left;
     padding: 6px 5px 0 5px;
-    color:#b3adad;
+    /*color:#b3adad;*/
+    color:#E6E6E8;
 }
 
 a.lang{
@@ -335,19 +338,50 @@ ul.left_menu li{
     list-style:none;
 }
 
-ul.left_menu li.odd a{
-    width:166px;height:25px;display:block;background:url(comp/imgs/checked.png) no-repeat left #dad0d0; background-position:5px 5px;border-bottom:1px #FFFFFF solid;
-    text-decoration:none;color:#504b4b;padding:0 0 0 30px; line-height:25px;
+/*ul.left_menu li.odd a{
+    width:166px;height:40px;display:block;background:url(comp/imgs/checked.png) no-repeat left #dad0d0; background-position:5px 5px;border-bottom:1px #FFFFFF solid;
+    text-decoration:none;color:#504b4b;padding:0 0 0 30px; line-height:40px;
 }
 
 ul.left_menu li.even a{
-    width:166px;height:25px;display:block;background:url(comp/imgs/checked.png) no-repeat left #eee6e6;background-position:5px 5px;border-bottom:1px #FFFFFF solid;
-    text-decoration:none;color:#504b4b;padding:0 0 0 30px; line-height:25px;
+    width:166px;height:40px;display:block;background:url(comp/imgs/checked.png) no-repeat left #eee6e6;background-position:5px 5px;border-bottom:1px #FFFFFF solid;
+    text-decoration:none;color:#504b4b;padding:0 0 0 30px; line-height:40px;
 }
 
 ul.left_menu li.even a:hover, ul.left_menu li.odd a:hover{
     background:url(comp/imgs/checked.png) no-repeat left #7bbcc7; color:#FFFFFF;background-position:5px 5px;
+}*/
+
+ul.left_menu li.odd a{
+    width:196px;height:42px;display:block;background:#d1d6de; background-position:0px 0px;border-bottom:1px #FFFFFF solid;
+    text-decoration:none;color:#504b4b;padding:0 0 0 0; line-height:42px;
 }
+
+ul.left_menu li.even a{
+    width:196px;height:42px;display:block;background:#E6EEF9;background-position:0px 0px;border-bottom:1px #FFFFFF solid;
+    text-decoration:none;color:#504b4b;padding:0 0 0 0; line-height:42px;
+}
+
+ul.left_menu li.even a:hover, ul.left_menu li.odd a:hover{
+    background:#939393; color:#FFFFFF;background-position:0px 0px;
+}
+
+ul.left_menu img{
+    float: left;
+    padding: 0;
+    margin: 13px 0 0 13px;
+    /*width: 40px;
+    height: 40px;*/
+}
+
+ul.left_menu span{
+    /*float: left;*/
+    padding: 0 0 0 5px;
+    margin: 0;
+    width: 151px;
+    height: 40px;
+}
+
 
 .border_box{
     width:194px;
@@ -548,13 +582,14 @@ a.prod_detalhes{
 }
 
 .product_img_big{
-    width:170px;
-    padding:5px 0 5px 10px;
+    width:200px;
+    height:200px;
+    padding:0;
     float:left;
 }
 
 .detalhes_big_box{
-    width:345px;
+    width:315px;
     float:left;
     padding:0 0 0 15px;
     text-align:left;
@@ -749,13 +784,13 @@ a:hover{
 {
     padding-left: 5px;
     text-decoration:none;
-    color: White;
+    color: #E6E6E8;
 }
 
 .conta_usuario a:hover
 {
     text-decoration:none;
-    color: Red;
+    color: #FC9C9C;
 }
 
 /* Estilos vindos do Starter Page da Microsoft */

@@ -25,16 +25,34 @@
         {
             if( WebSecurity.Login( usuario, senha, false ) )
             {
-                var urlRetorno = Request.QueryString["ReturnUrl"];
-                if( urlRetorno.IsEmpty() )
+                // Verificação para confirmar se administrador
+                var db = Database.Open("generalMarket");
+                var resAdmin = db.QuerySingle( "SELECT acesso FROM usuario WHERE id=@0", WebSecurity.CurrentUserId );
+                
+                if( resAdmin != null )
                 {
-                    Response.Redirect("~/");
-                }else
-                {
-                    Context.RedirectLocal( urlRetorno );
+                    if( resAdmin.acesso == 0 )
+                    {
+                        // Redireciona para a página da conta do Administração
+                        Response.Redirect("~/admin/conta.cshtml");
+                    }else
+                    {
+                        var urlRetorno = Request.QueryString["ReturnUrl"];
+                        if( urlRetorno.IsEmpty() )
+                        {
+                            Response.Redirect("~/");
+                        }else
+                        {
+                            Context.RedirectLocal( urlRetorno );
+                        }
+                    }
                 }
+                
+                
+            }else
+            {
+                taValido = false;
             }
-            taValido = false;
         }
     }
 }

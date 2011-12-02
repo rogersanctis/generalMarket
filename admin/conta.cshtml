@@ -1,0 +1,29 @@
+﻿@{
+    Layout = "~/comp/layout_geral.cshtml";
+    Page.Title = "Administração do Site";
+    
+    var acesso = false;
+    
+    if( WebSecurity.IsAuthenticated )
+    {
+        var db = Database.Open( "generalMarket" );
+        var res = db.QuerySingle( "SELECT acesso FROM usuario WHERE id=@0", WebSecurity.CurrentUserId );
+        
+        if(res != null)
+        {
+            if( res.acesso == 0 )
+            {
+                acesso = true;
+            }
+        }            
+    }
+}
+
+@if(acesso)
+{
+    <p>Bem vindo à administração de seu site.</p>
+}else
+{
+    <p>Você não tem acesso a essa página.</p>
+    <a href="@Href("~/")">voltar</a>
+}

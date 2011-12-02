@@ -1,0 +1,36 @@
+﻿@{
+    Layout = "~/comp/layout_geral.cshtml";
+    Page.Title = "Administração do Site";
+    
+    var db = Database.Open("generalMarket");
+    
+    var result = db.QuerySingle( "SELECT login FROM usuario WHERE login = @0", "Administrador" );
+    
+    // Dados padrões do usuário Administrador        
+    var adminNome =  "Administrador";
+    var adminLogin = adminNome;
+    var adminSenha = adminLogin;
+    var adminAcesso = 0;
+        
+    if( result == null )
+    {
+
+        db.Execute( "INSERT INTO usuario(nome,login,email,acesso) VALUES(@0,@1,@2,@3)", adminNome, adminLogin, "admin@admin.com", adminAcesso );
+        
+        try{
+            WebSecurity.CreateAccount( adminLogin, adminSenha );
+            
+            WebSecurity.Login( adminLogin, adminSenha );
+            Response.Redirect("~/");
+        }catch( System.Web.Security.MembershipCreateUserException e)
+        {
+            <p>Exceção ocorreu: @e.ToString()</p>
+        }
+    }else
+    {
+        <p>Administrador: @adminLogin já existe.</p>
+    }
+    
+    Response.AppendHeader("REFRESH", "5;URL=" + Href("~/") );
+}
+

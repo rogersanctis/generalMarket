@@ -1,0 +1,49 @@
+﻿@using System.Web.Mvc;
+@using System.Data;
+@using System.Text;
+
+@functions {
+
+    public static string paraMoedaReal( decimal valor )
+    {
+        var cultura = new System.Globalization.CultureInfo("pt-BR");
+        return ( string.Format(cultura, "{0,2:C}", valor) );
+    }
+
+    public static string listar( IEnumerable<Produto> produtos )
+    {
+        var sbret = new StringBuilder();
+        var sb = new StringBuilder();
+        var lista = new TagBuilder("div");
+        lista.MergeAttribute( "class", "prod_box" );
+        
+        foreach( var produto in produtos )
+        {
+            var divGeral = new TagBuilder("div");
+
+            var divImg = new TagBuilder("div");
+            var link = new TagBuilder("a");
+            
+            link.MergeAttribute( "href", Href("~/produto.cshtml?p=" + produto.id) );
+            
+            var img = new TagBuilder("img");
+            img.MergeAttribute( "src", Href("~/imgs/produtos/mini/" + produto.img) );
+            
+            link.InnerHtml = img.ToString(TagRenderMode.Normal);
+            
+            divImg.InnerHtml = link.ToString(TagRenderMode.Normal);
+
+            var divProdutoDesc = new TagBuilder("div");
+            
+            divProdutoDesc.InnerHtml = produto.nome + " - <span>R$ " + produto.valor + "</span>";
+            
+            sb.Append( divImg.ToString(TagRenderMode.Normal) );
+            sb.Append( divProdutoDesc.ToString(TagRenderMode.Normal) );
+            
+            lista.InnerHtml += sb.ToString();
+        }
+        
+        sbret.Append( lista.ToString( TagRenderMode.Normal ) );
+        return sbret.ToString();
+    }
+}
